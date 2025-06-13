@@ -72,6 +72,7 @@ const Register = () => {
               <h3 className="text-center mb-4">Create Your Account</h3>
               
               {error && <Alert variant="danger">{error}</Alert>}
+              }
               
               <Form onSubmit={handleSubmit}>
                 <Row>
