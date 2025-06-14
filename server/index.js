@@ -5,6 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const net = require('net');
 require('dotenv').config();
 
 // Import routes
@@ -25,6 +26,27 @@ const io = socketIo(server, {
     methods: ['GET', 'POST']
   }
 });
+
+// Function to check if port is available
+const isPortAvailable = (port) => {
+  return new Promise((resolve) => {
+    const tester = net.createServer()
+      .once('error', () => resolve(false))
+      .once('listening', () => {
+        tester.once('close', () => resolve(true)).close();
+      })
+      .listen(port);
+  });
+};
+
+// Function to find available port
+const findAvailablePort = async (startPort) => {
+  let port = startPort;
+  while (!(await isPortAvailable(port))) {
+    port++;
+  }
+  return port;
+};
 
 // Security middleware
 app.use(helmet());
@@ -80,8 +102,20 @@ app.use('*', (req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-const PORT = process.env.PORT || 5000;
+const startServer = async () => {
+  const desiredPort = process.env.PORT || 5000;
+  const availablePort = await findAvailablePort(desiredPort);
+  
+  server.listen(availablePort, () => {
+    if (availablePort !== parseInt(desiredPort)) {
+      console.log(`Port ${desiredPort} was in use. Server running on port ${availablePort}`);
+    } else {
+      console.log(`Server running on port ${availablePort}`);
+    }
+  });
+};
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+startServer().catch(err => {
+  console.error('Failed to start server:', err);
+  process.exit(1);
 });
