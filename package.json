@@ -1,5 +1,5 @@
 {
-  "name": "sociale-social-media-app",
+  "name": "sociale",
   "version": "1.0.0",
   "description": "A comprehensive social media app built with MERN stack and Socket.io",
   "main": "server/index.js",
@@ -12,10 +12,20 @@
     "install-client": "cd client && npm install",
     "install-all": "npm run install-server && npm run install-client"
   },
-  "keywords": ["social-media", "mern", "socket.io", "react", "nodejs"],
-  "author": "Your Name",
+  "keywords": [
+    "social-media",
+    "mern",
+    "socket.io",
+    "react",
+    "nodejs"
+  ],
+  "author": "Yuvraj Singh",
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "cloudinary": "^2.6.1",
+    "jsonwebtoken": "^9.0.2"
   }
 }

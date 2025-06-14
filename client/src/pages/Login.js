@@ -50,7 +50,6 @@ const Login = () => {
               <h3 className="text-center mb-4">Welcome Back</h3>
               
               {error && <Alert variant="danger">{error}</Alert>}
-              }
               
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
